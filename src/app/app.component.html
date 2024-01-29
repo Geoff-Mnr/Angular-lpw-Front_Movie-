@@ -5,4 +5,7 @@
       Afficher la liste
     </button>
 </div>
-<! Si showList est vrai, on affiche la liste des films.>
+@if (showList) {
+  <!--app-liste-films est un composant qui affiche la liste des films. -->
+  <app-list></app-list>
+  } 

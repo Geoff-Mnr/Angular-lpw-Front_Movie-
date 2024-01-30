@@ -4,6 +4,8 @@ import { Movie } from '../../models/movie.interface';
 import { RouterLink } from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
 import { AddEditComponent } from '../add-edit/add-edit.component';
+import { Subscription } from 'rxjs';
+import { OnDestroy } from '@angular/core';
 
 
 
@@ -14,10 +16,11 @@ import { AddEditComponent } from '../add-edit/add-edit.component';
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']  // Modifié ici
 })
-export class ListComponent {
+export class ListComponent implements OnDestroy {
 
   service = inject(MovieService);
   selectedMovie?: Movie;
+  private subDelete: Subscription | undefined;
 
   movies: Movie[] = [];
 
@@ -27,8 +30,9 @@ export class ListComponent {
     this.getAllMovies();
   }
 
+  /*Methode pour afficher le formulaire d'ajout*/
   getAllMovies() {
-    this.service.list().subscribe((result: any) => {
+    this.subDelete = this.service.list().subscribe((result: any) => {
       console.log(result);
       this.movies = result.data;
     });
@@ -41,7 +45,7 @@ export class ListComponent {
   }
 
   updateMovie(item: Movie) {
-    this.service.update(item.id, item).subscribe({
+    this.subDelete = this.service.update(item.id, item).subscribe({
       next: () => {
         console.log('Movie updated successfully');
         this.getAllMovies();
@@ -55,7 +59,7 @@ export class ListComponent {
   }
 
   createMovie(item: Movie) {
-    this.service.create(item).subscribe({
+    this.subDelete = this.service.create(item).subscribe({
       next: () => {
         console.log('Movie created successfully');
         this.getAllMovies();
@@ -70,7 +74,7 @@ export class ListComponent {
 
   // Méthode pour supprimer un film
   deleteMovie(item: Movie) {
-    this.service.delete(item.id).subscribe({
+    this.subDelete = this.service.delete(item.id).subscribe({
       next: () => {
         console.log('Movie deleted successfully');
         this.getAllMovies();
@@ -93,4 +97,9 @@ export class ListComponent {
     this.selectedMovie = undefined;
   }
 
+  ngOnDestroy() {
+    if (this.subDelete) {
+      this.subDelete.unsubscribe();
+    }
+  }
 }

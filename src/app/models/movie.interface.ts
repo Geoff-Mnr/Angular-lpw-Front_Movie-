@@ -3,7 +3,7 @@ export interface Movie {
     title: string;
     year: number;
     director: string;
-    sinonpsis: string;
+    synopsis: string;
     created_at: Date;
     updated_at: Date;
 }

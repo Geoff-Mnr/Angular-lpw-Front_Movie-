@@ -6,6 +6,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { AddEditComponent } from '../add-edit/add-edit.component';
 
 
+
 @Component({
   selector: 'app-list',
   standalone: true,
@@ -79,6 +80,8 @@ export class ListComponent {
       }
     });
   }
+
+
 
   /*Methode pour fermer le formulaire d'ajout*/
   private closeAddForm() {
